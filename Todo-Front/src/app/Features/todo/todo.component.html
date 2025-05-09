@@ -1,0 +1,87 @@
+<!-- <div>
+    <input [(ngModel)]="todoTitle" placeholder="Add task" />
+    <button (click)="addTodo()">Add</button>
+</div>
+  
+<ul>
+    @for (todo of todos; track $index) 
+    {
+    <li>
+        <input type="checkbox" [checked]="todo.isCompleted" (change)="toggleComplete(todo)" />
+        {{ todo.title }}
+        <button (click)="deleteTodo(todo.id)">Delete</button>
+    </li>
+    }
+</ul> -->
+<div class="app-container">
+  <div class="todo-app">
+    <header class="app-header">
+      <h1 class="app-title">Tasks</h1>
+      <p class="app-subtitle">
+        <span *ngIf="activeTodoCount > 0">{{ activeTodoCount }} active</span>
+        <span *ngIf="activeTodoCount > 0 && completedTodoCount > 0"> • </span>
+        <span *ngIf="completedTodoCount > 0">{{ completedTodoCount }} completed</span>
+        <span *ngIf="activeTodoCount === 0 && completedTodoCount === 0">Add your first task</span>
+      </p>
+    </header>
+
+    <div class="todo-input-container">
+      <input 
+        [(ngModel)]="todoTitle" 
+        placeholder="Add a new task..." 
+        (keyup.enter)="addTodo()"
+        class="todo-input" 
+        autofocus
+      />
+      <button 
+        (click)="addTodo()" 
+        class="add-button"
+        [disabled]="todoTitle.trim() === ''"
+      >
+        Add
+      </button>
+    </div>
+    
+    <div class="todo-list-wrapper" *ngIf="todos.length > 0">
+      <ul class="todo-list" [@todoList]="todos.length">
+        @for (todo of todos; track todo.id) {
+          <li class="todo-item" [@todoItem]>
+            <div class="todo-content">
+              <label class="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  [checked]="todo.isCompleted" 
+                  (change)="toggleComplete(todo)" 
+                  class="todo-checkbox"
+                />
+                <span 
+                  class="checkmark" 
+                  [@checkboxState]="todo.isCompleted ? 'checked' : 'unchecked'"
+                ></span>
+              </label>
+              <span 
+                class="todo-text" 
+                [class.completed]="todo.isCompleted"
+              >
+                {{ todo.title }}
+              </span>
+            </div>
+            <button 
+              (click)="deleteTodo(todo.id)" 
+              class="delete-button"
+              title="Delete task"
+            >
+              Delete
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+    
+    <div class="empty-state" *ngIf="todos.length === 0">
+      <div class="empty-state-icon">✓</div>
+      <p class="empty-state-text">Your task list is empty</p>
+      <p class="empty-state-subtext">Add a new task to get started</p>
+    </div>
+  </div>
+</div>
